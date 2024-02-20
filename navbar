@@ -1,0 +1,314 @@
+import Link from "next/link";
+import React, { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+
+const Navbar = () => {
+    const [nav, setNav] = useState(false);
+
+  const links = [
+    {
+      id: 1,
+      link: "home",
+    },
+    {
+      id: 2,
+      link: "about",
+    },
+    {
+      id: 3,
+      link: "portfolio",
+    },
+    {
+      id: 4,
+      link: "experience",
+    },
+    {
+      id: 5,
+      link: "contact",
+    },
+  ];
+
+  return (
+    <div className="flex justify-between items-center w-full h-20 px-4 text-white bg-black fixed nav">
+      <div>
+        {/* <h1 className="text-5xl font-signature ml-2"><a className="link-underline hover:transition ease-in-out delay-150 hover:underline hover:decoration-solid" href="">Logo</a></h1> */}
+        <h1 className="text-5xl font-signature ml-2">
+          <a
+            className="link-underline link-underline-black"
+            href=""
+            target="_blank"
+            rel="noreferrer"
+          >
+            Logo
+          </a>
+        </h1>
+      </div>
+
+      <ul className="hidden md:flex">
+        {links.map(({ id, link }) => (
+          <li
+            key={id}
+            className="nav-links px-4 cursor-pointer capitalize font-medium text-gray-500 hover:scale-105 hover:text-white duration-200 link-underline"
+          >
+            <Link href={link}>{link}</Link>
+          </li>
+        ))}
+      </ul>
+
+      <div
+        onClick={() => setNav(!nav)}
+        className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
+      >
+        {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
+      </div>
+
+      {nav && (
+        <ul className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500">
+          {links.map(({ id, link }) => (
+            <li
+              key={id}
+              className="px-4 cursor-pointer capitalize py-6 text-4xl"
+            >
+              <Link onClick={() => setNav(!nav)} href={link}>
+                {link}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default Navbar;
+
+=========
+
+Installing Dependencies
+Inside the project directory, install the required dependencies:
+npm install react-icons
+
+The react-icons package provides a collection of popular icons for use in your components.
+Building the Responsive Navigation Bar
+Create a new file named Navbar.js in the components directory. Paste the following code into the file:
+import Link from "next/link";
+import React, { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+
+const Navbar = () => {
+    const [nav, setNav] = useState(false);
+
+  const links = [
+    {
+      id: 1,
+      link: "home",
+    },
+    {
+      id: 2,
+      link: "about",
+    },
+    {
+      id: 3,
+      link: "portfolio",
+    },
+    {
+      id: 4,
+      link: "experience",
+    },
+    {
+      id: 5,
+      link: "contact",
+    },
+  ];
+
+  return (
+    <div className="flex justify-between items-center w-full h-20 px-4 text-white bg-black fixed nav">
+      <div>
+        {/* <h1 className="text-5xl font-signature ml-2"><a className="link-underline hover:transition ease-in-out delay-150 hover:underline hover:decoration-solid" href="">Logo</a></h1> */}
+        <h1 className="text-5xl font-signature ml-2">
+          <a
+            className="link-underline link-underline-black"
+            href=""
+            target="_blank"
+            rel="noreferrer"
+          >
+            Logo
+          </a>
+        </h1>
+      </div>
+
+      <ul className="hidden md:flex">
+        {links.map(({ id, link }) => (
+          <li
+            key={id}
+            className="nav-links px-4 cursor-pointer capitalize font-medium text-gray-500 hover:scale-105 hover:text-white duration-200 link-underline"
+          >
+            <Link href={link}>{link}</Link>
+          </li>
+        ))}
+      </ul>
+
+      <div
+        onClick={() => setNav(!nav)}
+        className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
+      >
+        {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
+      </div>
+
+      {nav && (
+        <ul className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500">
+          {links.map(({ id, link }) => (
+            <li
+              key={id}
+              className="px-4 cursor-pointer capitalize py-6 text-4xl"
+            >
+              <Link onClick={() => setNav(!nav)} href={link}>
+                {link}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default Navbar;
+Integrating the Navbar Component
+Using the Navbar Component
+Open the layout.js file and import the Navbar component.
+
+==========
+
+import { Inter } from "next/font/google";
+import "./style.css";
+import Navbar from "../components/Navbar";
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Navbar />
+        {children}
+      </body>
+    </html>
+  );
+}
+
+ 
+iamvinny profile image
+Vinicius Amparo
+•
+Jan 21 • Edited on Jan 21
+
+This navbar has a problem, if you click on the toggle button, and then resize the window back to large screen size the menu will still be visible but without the close icon.
+
+You can fix it with the code below
+// Function to hide nav on resize
+const handleResize = () => {
+    if (window.innerWidth >= 768) { // Assuming 768px is your md breakpoint
+        setNav(false);
+    }
+};
+
+// Set up event listener for window resize
+useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
+
+----------------------
+
+import Link from "next/link";
+import React, { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+
+const Navbar = () => {
+    const [nav, setNav] = useState(false);
+
+  const links = [
+    {
+      id: 1,
+      link: "home",
+    },
+    {
+      id: 2,
+      link: "about",
+    },
+    {
+      id: 3,
+      link: "portfolio",
+    },
+    {
+      id: 4,
+      link: "experience",
+    },
+    {
+      id: 5,
+      link: "contact",
+    },
+  ];
+
+  return (
+    <div className="flex justify-between items-center w-full h-20 px-4 text-white bg-black fixed nav">
+      <div>
+        {/* <h1 className="text-5xl font-signature ml-2"><a className="link-underline hover:transition ease-in-out delay-150 hover:underline hover:decoration-solid" href="">Logo</a></h1> */}
+        <h1 className="text-5xl font-signature ml-2">
+          <a
+            className="link-underline link-underline-black"
+            href=""
+            target="_blank"
+            rel="noreferrer"
+          >
+            Logo
+          </a>
+        </h1>
+      </div>
+
+      <ul className="hidden md:flex">
+        {links.map(({ id, link }) => (
+          <li
+            key={id}
+            className="nav-links px-4 cursor-pointer capitalize font-medium text-gray-500 hover:scale-105 hover:text-white duration-200 link-underline"
+          >
+            <Link href={link}>{link}</Link>
+          </li>
+        ))}
+      </ul>
+
+      <div
+        onClick={() => setNav(!nav)}
+        className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
+      >
+        {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
+      </div>
+
+      {nav && (
+        <ul className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500">
+          {links.map(({ id, link }) => (
+            <li
+              key={id}
+              className="px-4 cursor-pointer capitalize py-6 text-4xl"
+            >
+              <Link onClick={() => setNav(!nav)} href={link}>
+                {link}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default Navbar;
